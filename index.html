@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171b2e">
+<title>캐릭터 반응 게임</title>
+<style>
+*{box-sizing:border-box}html{background:#131629}body{margin:0;color:#f8f9ff;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:radial-gradient(ellipse at 44% -10%,#303957,#161c34 53%,#111526);min-height:100svh;letter-spacing:-.035em}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:2px solid #f6e3b0;outline-offset:3px}.game{max-width:1220px;margin:0 auto;padding:19px 19px 28px}.stage{background:#f6f7fa;position:relative;overflow:hidden;border-radius:20px;line-height:0;box-shadow:0 20px 60px #04081275}.stage svg{width:100%;height:auto;display:block;aspect-ratio:1280/700}.stage:after{content:"";pointer-events:none;position:absolute;inset:0;border:1px solid #ffffff70;border-radius:20px}.scorePop{position:absolute;pointer-events:none;top:40%;left:50%;z-index:10;font-weight:950;color:#c74963;font-size:28px;text-shadow:0 2px 7px #fff8;opacity:0}.scorePop.play{animation:points 1.25s ease-out forwards}@keyframes points{0%{opacity:0;transform:translateY(20px) scale(.7)}20%{opacity:1;transform:translateY(0) scale(1.12)}76%{opacity:1}100%{opacity:0;transform:translateY(-83px)}}
+.panel{margin-top:16px;display:grid;grid-template-columns:1fr 1.6fr;gap:15px}.stats{background:linear-gradient(150deg,#272c47,#20253f);border-radius:17px;padding:17px 19px;border:1px solid #ffffff17;min-width:0}.statshead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}.statshead strong{font-size:15px;font-weight:900}.statshead span{color:#a7b1d0;font-size:11px;font-weight:750}.stat{display:grid;grid-template-columns:51px 1fr 42px;align-items:center;gap:11px;margin:12px 0}.stat label{font-size:12px;font-weight:750;color:#dde1f1}.bar{height:8px;background:#11162b;border-radius:99px;overflow:hidden}.fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.2,.78,.21,1)}.fill.c{background:linear-gradient(90deg,#fcb478,#fa728c)}.fill.a{background:linear-gradient(90deg,#66c8ed,#3e84ee)}.fill.r{background:linear-gradient(90deg,#8379d3,#bf98f7)}.stat output{text-align:right;font-size:12px;font-weight:850;font-variant-numeric:tabular-nums}.scoreline{margin-top:15px;padding-top:13px;border-top:1px solid #ffffff19;display:flex;justify-content:space-between;align-items:center}.scoreline span{color:#bac2d8;font-size:12px;font-weight:750}.scoreline b{font-size:23px;letter-spacing:-.05em}.scoreline small{font-size:12px;color:#aab1c8}.controls{min-width:0}.ctrlhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 11px}.ctrlhead strong{font-size:16px;font-weight:900}.ctrlhead span{color:#b2bad2;font-size:11px;font-weight:720}.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.action{position:relative;min-height:169px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:14px;text-align:left;border:1px solid #ffffff2a;border-radius:14px;padding:15px;background:linear-gradient(145deg,#303754,#242a45);color:#fff;box-shadow:0 3px 0 #101429;transition:transform .17s,border .17s,filter .17s}.action.primary{background:linear-gradient(145deg,#326bd3,#244987)}.action.pink{background:linear-gradient(145deg,#b85175,#7b3b66)}.action:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.12);border-color:#ffffff87}.action:active:not(:disabled){transform:translateY(2px);box-shadow:0 0 0 #101429}.action:disabled{opacity:.58;cursor:wait}.action .num{font-size:12px;color:#fff;border:1px solid #ffffff70;background:#ffffff15;border-radius:8px;padding:4px 9px;font-weight:850;letter-spacing:.06em}.action h2{font-size:17px;font-weight:910;margin:0 0 5px;line-height:1.3}.action p{color:#d1d6e9;font-size:11px;line-height:1.4;font-weight:670;margin:0;word-break:keep-all}.footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;font-size:11px;color:#b2bdd5;font-weight:710}.reset{background:#ffffff13;border:1px solid #ffffff32;color:#fff;border-radius:10px;padding:10px 15px;font-size:12px;font-weight:800}.reset:hover{background:#ffffff25}.note{max-width:720px;line-height:1.6}.overlay{position:absolute;inset:0;background:#131a34bb;backdrop-filter:blur(9px);display:none;align-items:center;justify-content:center;z-index:20;padding:16px;line-height:1.5}.overlay.open{display:flex}.endcard{max-width:490px;width:100%;text-align:center;padding:27px 29px;background:linear-gradient(155deg,#ffffff,#eef0f8);color:#252b42;border-radius:23px;box-shadow:0 20px 80px #080c2080}.endcard .kicker{font-weight:900;letter-spacing:.2em;color:#bf6a7f;font-size:11px}.endcard .big{font-size:66px;line-height:1.15;color:#e7627c;font-weight:950;letter-spacing:-.08em;margin:6px 0 2px}.endcard .big small{font-size:17px;color:#929bae}.endcard h2{font-size:26px;margin:3px 0 8px}.endcard p{font-size:13px;font-weight:680;line-height:1.7;color:#657188;max-width:360px;margin:0 auto 16px}.outcome{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 23px}.outcome span{font-size:11px;color:#566078;background:#e1e5f1;border-radius:99px;padding:8px 11px;font-weight:850}.endcard button{background:#293756;color:white;border:0;border-radius:11px;padding:13px 24px;font-size:13px;font-weight:900}.fineprint{font-size:10px;color:#7c87a7;text-align:right;margin-top:8px}
+@media(max-width:860px){.game{padding:12px}.panel{grid-template-columns:1fr;gap:12px}.stage{border-radius:14px}.stats{padding:14px 16px}.statshead{margin-bottom:8px}.stat{margin:9px 0}.scoreline{margin-top:9px;padding-top:9px}.action{min-height:123px}.footer{margin-top:13px}}@media(max-width:450px){.game{padding:6px}.panel{margin-top:9px;gap:9px}.stats{padding:11px 13px;border-radius:12px}.statshead strong{font-size:13px}.stat{gap:7px;grid-template-columns:47px 1fr 38px}.stat label{font-size:10px}.stat output{font-size:11px}.ctrlhead{margin-bottom:7px}.ctrlhead strong{font-size:13px}.ctrlhead span{font-size:9px}.actions{gap:6px}.action{border-radius:10px;min-height:107px;padding:9px 7px;gap:10px}.action h2{font-size:12px}.action p{font-size:9px}.action .num{font-size:9px;padding:3px 6px}.footer{font-size:9px}.note{max-width:70%}.reset{font-size:10px;padding:7px 9px}.endcard{padding:18px}.endcard .big{font-size:50px}}
+</style>
+</head>
+<body>
+<main class="game" id="game">
+<section class="stage" aria-label="게임 장면: 빨간 여성과 파란 남성이 앉아 있는 버스 정류장">
+<svg id="world" viewBox="0 0 1280 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="로우폴리 버스 정류장에 앉아있는 빨간색 여성과 파란색 남성 캐릭터">
+<defs>
+ <linearGradient id="sky" x2=".13" y2="1"><stop stop-color="#fdfefe"/><stop offset="1" stop-color="#ebeff3"/></linearGradient>
+ <linearGradient id="ground" x2="1" y2=".48"><stop stop-color="#f5f7fa"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#e8ebf1"/></linearGradient>
+ <linearGradient id="shirtRed" x2="1" y2=".9"><stop stop-color="#fb7974"/><stop offset=".6" stop-color="#dd514e"/><stop offset="1" stop-color="#bb3441"/></linearGradient>
+ <linearGradient id="shirtBlue" x2="1" y2=".8"><stop stop-color="#5da8fa"/><stop offset=".5" stop-color="#2b78df"/><stop offset="1" stop-color="#1954a8"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="1280" height="700" fill="url(#sky)"/>
+<g id="backgroundCity"></g>
+<path d="M0 499 Q600 482 1280 504 L1280 700 L0 700Z" fill="url(#ground)"/>
+<path d="M0 632 L790 554 L1209 700 L0 700Z" fill="#fff" opacity=".68"/>
+<path d="M0 690 L1280 526 L1280 700Z" fill="#d9dee6" opacity=".27"/>
+<g id="trees"></g>
+<g stroke-linecap="round" stroke-linejoin="round">
+ <path d="M1093 140 L1157 533" stroke="#dde0e4" stroke-width="20"/><path d="M1061 230 L1220 231 M1107 302 L1278 308" stroke="#d9dde3" stroke-width="9"/><path d="M1096 144 L1190 143" stroke="#d4d8de" stroke-width="9"/>
+ <path d="M1113 200 Q1204 180 1280 114 M1115 216 Q1206 198 1280 151 M1133 231 Q1208 222 1280 192" fill="none" stroke="#d6dae0" stroke-width="4"/>
+ <path d="M1176 230 L1176 254 M1219 231 L1219 255" stroke="#cfd5dc" stroke-width="5"/>
+</g>
+<g stroke-linejoin="round">
+ <path d="M157 308 L148 495" stroke="#d9dde2" stroke-width="11"/>
+ <polygon points="189,171 314,183 288,307 164,293" fill="#fafafa" stroke="#bdc5cd" stroke-width="2"/><polygon points="189,171 242,190 164,293" fill="#edf0f3" stroke="none"/>
+ <polygon points="64,307 248,309 228,409 41,398" fill="#f8f9fa" stroke="#bfc5ce" stroke-width="2.4"/><polygon points="64,307 135,358 41,398" fill="#e6e9ec" stroke="none"/>
+ <polygon points="48,435 195,441 207,627 0,624" fill="#f4f5f7" stroke="#c8ced7" stroke-width="2"/><polygon points="48,435 116,527 0,624" fill="#e8ebef" stroke="none"/>
+</g>
+<g id="wall"></g>
+<ellipse cx="741" cy="653" rx="372" ry="27" fill="#abb5c7" opacity=".3" filter="url(#shadow)"/>
+<g id="bench" stroke-linejoin="round">
+ <path d="M262 450 L1121 454 L1125 479 L249 477Z" fill="#fbfcfd" stroke="#d2d8df" stroke-width="2.6"/>
+ <path d="M295 479 L271 642 L310 641 L352 479 M1046 479 L1077 645 L1105 645 L1090 479" fill="#dee2e8"/>
+ <path d="M337 516 L1111 510 L1105 537 L333 540Z" fill="#fbfcfd" stroke="#d4d9df" stroke-width="3"/>
+ <path d="M337 534 L1103 529" stroke="#e4e7eb" stroke-width="9"/>
+</g>
+<!-- Woman, legs intentionally narrow to 50% of the original rig -->
+<g id="girl" stroke="#662731" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+ <g id="girlLeftLeg" transform="translate(575 0) scale(.5 1) translate(-575 0)">
+  <path d="M548 495 L611 497 L602 554 L587 633 L537 634 L548 551Z" fill="#d84c51"/>
+  <polygon points="555,506 583,509 568,625 539,633" fill="#f27a70" stroke="none" opacity=".74"/>
+  <path d="M538 621 Q564 613 590 628 L594 665 Q546 679 514 667 Q515 643 538 621Z" fill="#ee6562"/>
+  <path d="M516 660 Q556 676 593 660" stroke="#983340" stroke-width="3" fill="none"/>
+ </g>
+ <g id="girlRightLeg" transform="translate(649 0) scale(.5 1) translate(-649 0)">
+  <path d="M620 492 L684 491 L687 559 L669 633 L618 632 L628 565Z" fill="#d74b50"/>
+  <polygon points="629,508 666,500 661,628 626,631" fill="#f27a70" stroke="none" opacity=".65"/>
+  <path d="M616 622 Q639 610 673 629 L683 662 Q657 676 606 669 Q604 644 616 622Z" fill="#eb6464"/>
+  <path d="M607 662 Q647 672 681 658" stroke="#983340" stroke-width="3" fill="none"/>
+ </g>
+ <path d="M571 431 L681 434 L713 506 Q616 523 518 506Z" fill="#c73b46"/>
+ <polygon points="569,442 625,470 604,506 528,504" fill="#e9645e" opacity=".82" stroke="none"/>
+ <polygon points="639,453 681,448 701,505 648,509" fill="#f46f69" stroke="none" opacity=".67"/>
+ <path d="M601 316 L602 357 L647 355 L644 311Z" fill="#db5c54"/>
+ <g id="girlUpper" transform="translate(0 0)">
+  <path d="M562 367 Q584 349 614 355 L639 354 Q669 346 689 373 L676 449 Q613 466 555 450Z" fill="url(#shirtRed)"/>
+  <polygon points="565,372 596,362 608,446 554,447" fill="#f78273" opacity=".65" stroke="none"/>
+  <polygon points="639,361 684,376 674,441 635,449" fill="#ae3541" opacity=".55" stroke="none"/>
+  <path d="M581 361 L612 380 L642 355" fill="none" stroke="#a9373a" stroke-width="2.5"/>
+  <path d="M555 448 Q617 463 675 444" fill="none" stroke="#9b323e" stroke-width="3"/>
+  <path d="M561 371 L538 367 L508 422 L528 443 L551 408Z" fill="#dd5555"/>
+  <polygon points="547,372 529,392 516,426 531,433" fill="#f27c72" stroke="none"/>
+  <path d="M682 372 L700 382 L720 425 L692 437 L673 392Z" fill="#dc5554"/>
+  <polygon points="688,382 709,420 693,426 674,392" fill="#f68174" stroke="none"/>
+ </g>
+ <g id="girlHead" transform="translate(618 291) rotate(-17)">
+  <path d="M-42 -30 L-31 -68 L-9 -82 L31 -75 L48 -55 L49 -9 L35 18 L-37 18 L-55 -6Z" fill="#b83e45"/>
+  <path d="M-30 -27 L-24 -51 L11 -56 L34 -35 L31 28 L10 52 L-12 48 L-34 21Z" fill="#ec6962"/>
+  <polygon points="-28,-28 -8,-49 2,19 -12,44 -33,19" fill="#fa8a7a" stroke="none" opacity=".73"/>
+  <polygon points="10,-51 34,-35 30,28 10,52 -4,8" fill="#c8434c" stroke="none" opacity=".66"/>
+  <path d="M-45 -31 L-31 -69 L-9 -82 L31 -75 L47 -54 L20 -49 L-5 -52 L-27 -29Z" fill="#bd3e47"/>
+  <polygon points="-28,-64 -10,-79 13,-65 -5,-49" fill="#e65a59" stroke="none"/>
+  <path d="M-42 -26 L-51 8 L-32 20 M39 -29 L52 8 L31 24" fill="#b63b46"/>
+  <g id="girlEyes" stroke="none" fill="#713038"><ellipse id="girlEyeL" cx="-14" cy="0" rx="3.4" ry="4.2"/><ellipse id="girlEyeR" cx="16" cy="0" rx="3.4" ry="4.2"/></g>
+  <path id="girlMouth" d="M-12 29 Q0 24 13 28" fill="none" stroke="#852e39" stroke-width="3"/>
+  <ellipse id="girlBlushL" cx="-26" cy="18" rx="10" ry="5" fill="#ffaca1" opacity="0" stroke="none"/><ellipse id="girlBlushR" cx="27" cy="18" rx="9" ry="4" fill="#ffaca1" opacity="0" stroke="none"/>
+ </g>
+ <!-- Flexible arm 1: covering mouth, lowers as she relaxes -->
+ <path id="girlCoverBase" d="M525 432 Q534 366 613 322" fill="none" stroke="#8e303b" stroke-width="30"/>
+ <path id="girlCoverFill" d="M525 432 Q534 366 613 322" fill="none" stroke="#e96860" stroke-width="24"/>
+ <g id="girlCoverHand" transform="translate(613 322)"><ellipse rx="13" ry="11" fill="#f5796c"/><path d="M-8 -3 L-9 -15 M1 -3 L1 -18 M9 -3 L10 -14" fill="none" stroke="#a83a42" stroke-width="2.2"/></g>
+ <!-- Bag -->
+ <g id="girlBag"><path d="M580 493 L680 492 L689 549 L573 549Z" fill="#9b394d"/><polygon points="581,495 630,505 602,547 576,547" fill="#e38180" stroke="none" opacity=".5"/><path d="M581 494 L631 525 L679 492" fill="none" stroke="#6e2636" stroke-width="3"/><path d="M614 486 Q621 469 645 483" fill="none" stroke="#ab4956" stroke-width="8"/><rect x="624" y="520" width="14" height="9" rx="2" fill="#efb38b" stroke="#ad7465" stroke-width="1.5"/></g>
+ <!-- Flexible arm 2: bag contact slows with relaxation -->
+ <path id="girlBagBase" d="M707 424 Q727 465 671 504" fill="none" stroke="#943540" stroke-width="28"/>
+ <path id="girlBagFill" d="M707 424 Q727 465 671 504" fill="none" stroke="#e6655e" stroke-width="22"/>
+ <g id="girlBagHand" transform="translate(671 504)"><ellipse rx="14" ry="12" fill="#f77c70"/><path d="M-5 -6 L-6 -10 M3 -6 L2 -11" fill="none" stroke="#9d3a43" stroke-width="1.7"/></g>
+</g>
+<!-- Whole male rig. All major body parts animate for action 03. -->
+<g id="manRig" stroke="#153965" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+ <g id="manLegs">
+  <g id="manLeftLeg"><g transform="translate(857 0) scale(.5 1) translate(-857 0)">
+   <path d="M810 481 L901 482 L897 558 L883 641 L804 640 L804 555Z" fill="#236ccc"/>
+   <polygon points="818,490 874,490 851,624 805,637" fill="#4b97f0" stroke="none" opacity=".75"/>
+   <path d="M799 631 Q833 623 875 636 L889 672 Q842 684 787 677 Q780 652 799 631Z" fill="#2e79da"/>
+   <path d="M787 673 Q828 686 889 665" fill="none" stroke="#173f76"/>
+  </g></g>
+  <g id="manRightLeg"><g transform="translate(964 0) scale(.5 1) translate(-964 0)">
+   <path d="M916 480 L1006 480 L1011 560 L1009 641 L936 640 L931 555Z" fill="#2268c4"/>
+   <polygon points="943,491 982,488 1001,631 953,632" fill="#418be6" stroke="none" opacity=".72"/>
+   <path d="M934 634 Q968 627 1016 638 L1031 675 Q983 688 928 676Z" fill="#2973d5"/>
+   <path d="M929 674 Q975 686 1032 671" fill="none" stroke="#163d74"/>
+  </g></g>
+ </g>
+ <g id="manUpper">
+  <path d="M875 286 L882 313 L924 314 L927 281Z" fill="#2373d1"/>
+  <g id="manTorso">
+   <path d="M849 317 L873 302 L900 328 L923 306 L969 321 L999 385 L979 490 L815 489 L806 386Z" fill="url(#shirtBlue)"/>
+   <polygon points="827,337 870,305 873,472 815,479" fill="#77baff" stroke="none" opacity=".42"/>
+   <polygon points="932,313 966,322 989,391 980,481 927,483" fill="#164c9c" stroke="none" opacity=".35"/>
+   <path d="M875 309 L901 336 L927 309 L915 380 L900 399 L881 381Z" fill="#73b8fa" stroke="#2962a8" stroke-width="2.2"/>
+   <path d="M900 333 L912 345 L906 358 L895 357 L887 345Z" fill="#184e9b" stroke-width="2.3"/>
+   <path d="M896 357 L906 357 L919 425 L898 452 L880 427Z" fill="#1b57a9" stroke-width="2.5"/>
+   <path d="M896 364 L903 365 L909 419 L896 436" fill="none" stroke="#5795d7" stroke-width="2.4"/>
+   <path d="M822 481 Q900 493 977 482" fill="none" stroke="#194579" stroke-width="3"/>
+  </g>
+  <g id="manHead" transform="translate(901 246)">
+   <path d="M-45 -55 L-16 -74 L28 -68 L51 -41 L46 6 L21 49 L-10 51 L-44 22 L-54 -22Z" fill="#246ec8"/>
+   <polygon points="-43,-52 -13,-73 -9,1 -44,22" fill="#58a7f8" stroke="none"/>
+   <polygon points="-12,-71 27,-67 50,-41 15,-16" fill="#61b1fd" stroke="none"/>
+   <polygon points="15,-15 51,-41 46,4 23,46 -5,40" fill="#195ab5" stroke="none"/>
+   <polygon points="-10,3 15,-16 16,35 -10,50 -42,21" fill="#3785df" stroke="none"/>
+   <g fill="#123a78" stroke="none"><ellipse id="manEyeL" cx="-18" cy="2" rx="2.7" ry="3.6"/><ellipse id="manEyeR" cx="16" cy="2" rx="2.7" ry="3.6"/></g>
+   <path id="manMouth" d="M-10 24 Q0 25 11 23" fill="none" stroke="#174679" stroke-width="3"/>
+   <path id="manNose" d="M-42 10 L-49 14 L-42 18" fill="none" stroke="#164b95" stroke-width="2.8" opacity="0"/>
+  </g>
+  <g id="manArms">
+   <path id="manUpperL" fill="#4295ec"/>
+   <path id="manForeL" fill="#2c7fdc"/>
+   <path id="manUpperR" fill="#2979d8"/>
+   <path id="manForeR" fill="#2877d7"/>
+   <g id="manHandL" transform="translate(823 469)"><path d="M-16 -10 L8 -14 L22 -3 L15 15 L-6 20 L-20 8Z" fill="#4294eb"/><path d="M-1 -13 L7 1" stroke="#1d5eb4" stroke-width="2"/></g>
+   <g id="manHandR" transform="translate(951 467)"><path d="M-16 -10 L8 -14 L22 -3 L15 15 L-6 20 L-20 8Z" fill="#3588e6"/><path d="M-1 -13 L7 1" stroke="#1d5eb4" stroke-width="2"/></g>
+  </g>
+ </g>
+</g>
+</svg>
+<div class="scorePop" id="pop" aria-hidden="true"></div>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+ <div class="endcard"><div class="kicker">FINAL RESULT</div><div class="big"><span id="finalScore">0</span><small> / 100</small></div><h2 id="endTitle">서로 편해졌어</h2><p id="endText"></p><div class="outcome" id="outcome"></div><button type="button" id="again">다시 플레이</button></div>
+</div>
+</section>
+<div class="panel">
+ <section class="stats" aria-label="상태와 점수">
+  <div class="statshead"><strong>상대의 상태</strong><span id="stateLabel">매우 긴장함</span></div>
+  <div class="stat"><label for="comfortBar">편안함</label><div class="bar" id="comfortBar"><div class="fill c" id="cBar" style="width:12%"></div></div><output id="cVal">12%</output></div>
+  <div class="stat"><label for="attentionBar">관심</label><div class="bar" id="attentionBar"><div class="fill a" id="aBar" style="width:8%"></div></div><output id="aVal">8%</output></div>
+  <div class="stat"><label for="rapportBar">친밀감</label><div class="bar" id="rapportBar"><div class="fill r" id="rBar" style="width:3%"></div></div><output id="rVal">3%</output></div>
+  <div class="scoreline"><span>현재 점수</span><b><span id="score">8</span><small> / 100</small></b></div>
+ </section>
+ <section class="controls" aria-label="행동 선택">
+  <div class="ctrlhead"><strong>행동 선택</strong><span>남은 선택 <b id="moves">8</b> / 8</span></div>
+  <div class="actions">
+   <button type="button" data-act="1" class="action primary"><span class="num">01</span><div><h2>관심 끌기</h2><p>양팔을 뻗어 이목을 끈다</p></div></button>
+   <button type="button" data-act="2" class="action pink"><span class="num">02</span><div><h2>분위기 풀기</h2><p>웃거나 박수를 치며 긴장 풀기</p></div></button>
+   <button type="button" data-act="3" class="action"><span class="num">03</span><div><h2>바라보기</h2><p>몸 전체를 틀어 상대 바라보기</p></div></button>
+  </div>
+ </section>
+</div>
+<footer class="footer"><span class="note" id="hint">행동 순서를 바꾸면 반응과 최종 점수도 달라집니다.</span><button type="button" class="reset" id="reset">처음부터</button></footer>
+</main>
+<script>
+(()=>{'use strict';
+ const $=id=>document.getElementById(id),clamp=(v,lo=0,hi=100)=>Math.max(lo,Math.min(hi,v)),lerp=(a,b,t)=>a+(b-a)*t;
+ const buttons=[...document.querySelectorAll('[data-act]')];let state,action=null,locked=false,timer=null;
+ function score(){let s=state;return clamp(Math.round(s.c*.43+s.a*.3+s.r*.27+Math.min(s.combo*2,6)))}
+ function grade(sc){return sc>=90?'S':sc>=76?'A':sc>=59?'B':sc>=40?'C':'D'}
+ function updateHUD(){const s=state;for(let [key,bar,val] of [['c','cBar','cVal'],['a','aBar','aVal'],['r','rBar','rVal']]){$(bar).style.width=Math.round(s[key])+'%';$(val).textContent=Math.round(s[key])+'%'}$('moves').textContent=8-s.n;$('score').textContent=score();$('stateLabel').textContent=s.c>=78?'활짝 웃는 중':s.c>=60?'긴장이 많이 풀림':s.c>=36?'조금 편해짐':s.c>=20?'조심스럽게 반응함':'매우 긴장함'}
+ function disable(v){buttons.forEach(b=>b.disabled=v)}
+ function reset(){if(timer)clearTimeout(timer);state={c:12,a:8,r:3,n:0,last:0,streak:0,combo:0,display:{c:12,a:8,r:3},before:{c:12,a:8,r:3}};action=null;locked=false;disable(false);$('overlay').classList.remove('open');$('pop').classList.remove('play');$('hint').textContent='행동 순서를 바꾸면 반응과 최종 점수도 달라집니다.';updateHUD()}
+ function pop(delta){let el=$('pop');el.classList.remove('play');void el.offsetWidth;el.textContent=(delta>=0?'+':'')+delta;el.style.color=delta>=0?'#c74963':'#5a6e90';el.classList.add('play')}
+ function choose(n){if(locked||state.n>=8)return;let old=score(),s=state,c=s.c,a=s.a,r=s.r,previous=s.last,streak=previous===n?s.streak+1:1,m=Math.pow(.64,streak-1),bonus='';
+ if(n===1){a+=(29-a*.08)*m;c+=5*m;r+=6*m;if(previous===3)c+=3*m}
+ else if(n===2){c+=25*m*(a>=25?1.15:.72);a+=9*m;r+=11*m;if(previous===1){c+=8;r+=3;bonus='좋은 연결';}}
+ else{r+=24*m*(c>=33?1.1:.53);c+=12*m*(c>=33?1:.55);a+=13*m;if(previous===2){r+=9;a+=4;bonus='좋은 연결';}}
+ if(streak>=3){c-=5;r-=3;bonus='같은 행동 반복: 효과 감소'}
+ if(previous===1&&n===2||previous===2&&n===3)s.combo++;
+ s.before={...s.display};s.c=clamp(c);s.a=clamp(a);s.r=clamp(r);s.n++;s.last=n;s.streak=streak;locked=true;disable(true);action={type:n,start:performance.now(),duration:n===3?1900:1500};
+ if(bonus){$('hint').textContent=bonus+' · '+(s.c>=65?'입을 가린 손을 내리고 웃기 시작한다.':s.a>=32?'상대를 조금씩 바라보며 어색함을 푼다.':'조금씩 반응을 보인다.')}else{$('hint').textContent=s.c>=78?'손을 가방에서 떼고 시선을 맞추며 밝게 웃는다.':s.c>=43?'입을 가린 손이 내려가고, 가방을 만지는 횟수도 줄었다.':s.a>=30?'관심이 생겼지만 아직 조심스럽다.':'조금씩 긴장을 풀기 시작한다.'}
+ updateHUD();pop(score()-old);
+ timer=setTimeout(()=>{locked=false;if(s.n>=8){disable(true);finish()}else disable(false)},action.duration)
+ }
+ function finish(){let sc=score(),g=grade(sc);$('finalScore').textContent=sc;let title=g==='S'?'완전히 마음이 통했어':g==='A'?'서로 편안해졌어':g==='B'?'많이 가까워졌어':g==='C'?'어색함이 조금 풀렸어':'아직은 조금 어색해';$('endTitle').textContent=title;$('endText').textContent=sc>=76?'처음에는 시선을 피하던 상대가 이제 가방에서 손을 떼고 자연스럽게 웃으며 바라봅니다.':'관심을 끌고, 분위기를 풀고, 그다음 마주 보는 순서를 시도해 보세요.';$('outcome').innerHTML=`<span>편안함 ${Math.round(state.c)}%</span><span>관심 ${Math.round(state.a)}%</span><span>친밀감 ${Math.round(state.r)}%</span><span>${g}등급</span>`;$('overlay').classList.add('open')}
+ function poly(id,a,b,wA,wB){const dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy)||1,nx=-dy/l,ny=dx/l;$(id).setAttribute('d',`M${a.x+nx*wA/2} ${a.y+ny*wA/2} L${b.x+nx*wB/2} ${b.y+ny*wB/2} Q${b.x+dx/l*5} ${b.y+dy/l*5} ${b.x-nx*wB/2} ${b.y-ny*wB/2} L${a.x-nx*wA/2} ${a.y-ny*wA/2}Z`)}
+ function arm(id1,id2,x0,y0,ex,ey,x1,y1){let path=`M${x0} ${y0} Q${ex} ${ey} ${x1} ${y1}`;$(id1).setAttribute('d',path);$(id2).setAttribute('d',path)}
+ function makeBg(){const NS='http://www.w3.org/2000/svg';function add(group,tag,attrs){const e=document.createElementNS(NS,tag);for(let [k,v] of Object.entries(attrs))e.setAttribute(k,v);group.appendChild(e);return e}
+ const b=$('backgroundCity');for(let i=0;i<13;i++){let x=i*111-24,top=377+(i%3)*19;add(b,'polygon',{points:`${x},${top} ${x+68},${top-20} ${x+110},505 ${x-12},504`,fill:i%2?'#f1f2f5':'#f7f8fa',opacity:'.7'})}
+ let seed=357;const rnd=()=>{seed=seed*16807%2147483647;return (seed-1)/2147483646};const trees=$('trees');function tree(x,y,scale){let g=add(trees,'g',{transform:`translate(${x} ${y}) scale(${scale})`,opacity:'.97'});add(g,'polygon',{points:'-11,341 -26,113 -82,40 -71,28 -7,96 0,37 16,37 14,137 70,52 81,58 26,163 25,340',fill:'#dfe2e6'});add(g,'polygon',{points:'-11,341 -26,113 -7,102 4,338',fill:'#fbfbfc'});
+ for(let [cx,cy,rr] of [[-92,35,78],[-26,2,91],[58,16,82],[103,64,67],[-127,98,60],[13,95,75]]){let pts=[];for(let j=0;j<8;j++){let rad=j*Math.PI/4-Math.PI/2,dist=rr*(.81+rnd()*.32);pts.push([cx+Math.cos(rad)*dist,cy+Math.sin(rad)*dist])}let fmt=ar=>ar.map(pt=>pt.map(v=>Math.round(v)).join(',')).join(' ');add(g,'polygon',{points:fmt(pts),fill:'#f9fafc'});for(let k=0;k<6;k++){let q=[cx+(rnd()-.5)*20,cy+(rnd()-.5)*30];add(g,'polygon',{points:fmt([pts[k],pts[(k+1)%8],q]),fill:['#e1e4e8','#e9eaee','#fff','#f2f3f6'][Math.floor(rnd()*4)],opacity:(.48+rnd()*.4).toFixed(2)})}}
+ }
+ tree(96,-120,1.18);tree(633,-87,.94);tree(1095,-120,1.18);tree(332,-128,.62);
+ const wall=$('wall');add(wall,'polygon',{points:'0,505 1280,500 1280,607 0,584',fill:'#e8eaee'});for(let i=0;i<18;i++){let x=i*78-25,yy=509+(i%4)*5,bot=585+(i%3)*7;add(wall,'polygon',{points:`${x},${yy} ${x+46},${yy+2} ${x+31},${bot-36} ${x-10},${bot-33}`,fill:i%3===0?'#f8f9fb':'#e9ebee',opacity:'.83'});add(wall,'polygon',{points:`${x+46},${yy+2} ${x+89},${yy+4} ${x+73},${bot} ${x+31},${bot-36}`,fill:i%2?'#d9dde3':'#eff0f3',opacity:'.78'})}}
+ function frame(t){let effect=0,type=0,turn=0;if(action){let p=clamp((t-action.start)/action.duration,0,1),ease=1-Math.pow(1-p,3);for(const x of ['c','a','r'])state.display[x]=lerp(state.before[x],state[x],ease);if(p>=1){action=null}else{type=action.type;effect=Math.pow(Math.sin(Math.PI*p),.92);turn=type===3?effect:0}}
+ const s=state.display,c=s.c/100,a=s.a/100,r=s.r/100;
+ // Woman moves her eyes toward the man as interest grows. No speech bubbles or dialogue are rendered.
+ const headAngle=lerp(-17,11,clamp(a*.81+r*.27,0,1));$('girlHead').setAttribute('transform',`translate(${618+4*r} ${291+Math.sin(t*.0014)*.7}) rotate(${headAngle})`);$('girlEyeL').setAttribute('cx',-14+4*a);$('girlEyeR').setAttribute('cx',16+4*a);let smile=clamp((c-.15)/.76,0,1);$('girlMouth').setAttribute('d',`M-12 29 Q0 ${lerp(24,47,smile)} 13 28`);$('girlBlushL').setAttribute('opacity',(.55*smile).toFixed(2));$('girlBlushR').setAttribute('opacity',(.5*smile).toFixed(2));$('girlUpper').setAttribute('transform',`rotate(${r*5.5} 625 447)`);
+ // Arms drop as she relaxes. Bag movements are slow and small (period ~4.8s), and stop when relaxed.
+ const relax=clamp((c-.12)/.82,0,1),hx=lerp(613,560,relax),hy=lerp(322,474,relax);arm('girlCoverBase','girlCoverFill',525,432,524+relax*11,365+relax*69,hx,hy);$('girlCoverHand').setAttribute('transform',`translate(${hx} ${hy}) rotate(${relax*24})`);
+ const fidget=Math.sin(t*.0013)*(1-clamp(c/.75,0,1))*2.0,stay=clamp((c-.39)/.56,0,1),bagx=lerp(671,710,stay)+fidget*.5,bagy=lerp(504,473,stay)+fidget;arm('girlBagBase','girlBagFill',707,424,726-5*stay,462-8*stay,bagx,bagy);$('girlBagHand').setAttribute('transform',`translate(${bagx} ${bagy}) rotate(${fidget*2})`);$('girlBag').setAttribute('transform',`translate(0 ${fidget*.32})`);
+ // Look action: pelvis, narrow legs, shoes, torso, shoulders, arms, head, face all turn toward the woman.
+ // A little sideways compression models 3D yaw rather than moving only the neck.
+ $('manRig').setAttribute('transform',`translate(${-16*turn} 0) translate(914 0) scale(${1-.13*turn} 1) translate(-914 0)`);
+ $('manLegs').setAttribute('transform',`rotate(${-2.3*turn} 916 498)`);
+ $('manLeftLeg').setAttribute('transform',`translate(${-25*turn} ${1*turn}) rotate(${-12*turn} 857 492)`);
+ $('manRightLeg').setAttribute('transform',`translate(${-33*turn} ${2*turn}) rotate(${-17*turn} 964 490)`);
+ $('manUpper').setAttribute('transform',`rotate(${-3.5*turn} 914 491)`);
+ $('manTorso').setAttribute('transform',`translate(${-7*turn} 0) translate(909 390) scale(${1-.37*turn} 1) skewY(${-1.3*turn}) translate(-909 -390)`);
+ $('manHead').setAttribute('transform',`translate(${901-16*turn} ${246+1.5*Math.sin(t*.0019)}) rotate(${-4*turn-(type===2?4*effect:0)}) scale(${1-.21*turn} 1)`);
+ $('manEyeL').setAttribute('cx',-18-5*turn);$('manEyeR').setAttribute('opacity',1-.85*turn);$('manNose').setAttribute('opacity',turn);$('manMouth').setAttribute('d',`M-10 24 Q0 ${24+(type===2?16*effect:4*turn)} 11 23`);
+ let l={x:822,y:468},rr={x:950,y:467},shL={x:835,y:351},shR={x:970,y:353};
+ if(type===1){let tug=1+.12*Math.sin(t*.018);l={x:lerp(l.x,736,effect*tug),y:lerp(l.y,375,effect)};rr={x:lerp(rr.x,809,effect*tug),y:lerp(rr.y,376,effect)}}
+ if(type===2){let clap=Math.sin((t-action.start)*.021),q=effect;l={x:lerp(l.x,876+14*clap,q),y:lerp(l.y,391,q)};rr={x:lerp(rr.x,889-14*clap,q),y:lerp(rr.y,391,q)}}
+ if(type===3){l={x:lerp(l.x,793,turn),y:lerp(l.y,427,turn)};rr={x:lerp(rr.x,866,turn),y:lerp(rr.y,423,turn)};shL={x:835+22*turn,y:351+3*turn};shR={x:970-34*turn,y:353+8*turn}}
+ let eL={x:lerp(798,shL.x+(l.x-shL.x)*.55,effect),y:lerp(418,shL.y+(l.y-shL.y)*.5+14,effect)};let eR={x:lerp(998,shR.x+(rr.x-shR.x)*.55,effect),y:lerp(416,shR.y+(rr.y-shR.y)*.5+13,effect)};
+ poly('manUpperL',shL,eL,43,37);poly('manForeL',eL,l,37,27);poly('manUpperR',shR,eR,45,36);poly('manForeR',eR,rr,37,27);$('manHandL').setAttribute('transform',`translate(${l.x} ${l.y}) rotate(${-20*turn-27*(type===1?effect:0)})`);$('manHandR').setAttribute('transform',`translate(${rr.x} ${rr.y}) rotate(${-25*turn+24*(type===1?effect:0)})`);
+ requestAnimationFrame(frame)
+ }
+ buttons.forEach(b=>b.addEventListener('click',()=>choose(Number(b.dataset.act))));$('reset').addEventListener('click',reset);$('again').addEventListener('click',reset);window.addEventListener('keydown',e=>{if(e.repeat||e.altKey||e.metaKey||e.ctrlKey)return;if('123'.includes(e.key)&&e.key.length===1){e.preventDefault();choose(Number(e.key))}if(e.key.toLowerCase()==='r'){e.preventDefault();reset()}});
+ makeBg();reset();requestAnimationFrame(frame)
+})();
+</script>
+</body>
+</html>
